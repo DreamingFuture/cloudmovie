@@ -1,0 +1,239 @@
+.redbox{
+    display: inline-block;
+	height: 30px;
+	width: 6px;
+	border: 0px solid #000;
+	background: red;
+	margin-bottom: -8px;
+    margin-right:  4px;
+}
+.main {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+	position: relative;
+	margin-bottom: 40px;
+}
+.subheading_text{
+    display: inline-block;
+}
+/* 顶端部分 */
+.background{
+	font-size: 14px;
+	color: #FFFFFF;
+}
+#poster{
+	width: 185px;
+	margin-left: 5px;
+}
+#title{
+	font-size: 20px;
+	color: #FFFFFF;
+}
+.movie_rating{
+	position: relative;
+	left: 200px;
+	display: inline-block;
+	width: 300px;
+}
+.comment{
+	font-size: 14px;
+}
+#rating{
+	font-size: 40px;
+    color: #ffad60;
+}
+#rating_count{
+	font-size: 12px;
+}
+
+/* 中部 */
+.each_duty, .each_people{
+	display: inline-block;
+}
+.each_people{
+	width: 100px;
+	margin-right: 10px;
+}
+.each_people div{
+	font-size: 12px;
+	color: #666666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+.still{
+	display: inline-block;
+	margin-right: 10px;
+}
+.banner_right{
+	width: 810px;
+	display: inline-block;
+	vertical-align: top;
+}
+.banner_left{
+	width: 352px;
+	vertical-align: top;
+	margin-left: 33px;
+	margin-top: 10px;
+	float: right;
+}
+.movie{
+	display: inline-block;
+	width: 100px;
+	margin-right: 14px;
+	margin-bottom: 10px;
+}
+.movie div{
+	color: #666666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	text-align: center;
+	font-size: 12px;
+}
+#casts{
+	margin-top: 10px;
+	margin-left: 10px;
+}
+#casts a, #stills a{
+	display: inline-block;
+	font-size: 14px;
+	width: 14px;
+	position: relative;
+	top: -75px;
+	color: #000000;
+}
+#casts a{
+	top: -75px;
+}
+.HD_pic{
+	width: 100%;
+    height: 100%;
+    margin: auto;
+    right: 0px;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 998;
+	position: fixed;
+	display: none;
+	background-color: #808080b0;
+}
+#stills a{
+	top: -40px;
+}
+.each_duty div{
+	font-size: 14px;
+}
+.section1, .section2, .section3{
+	margin-top: 10px;
+}
+#stills{
+	margin-top: 10px;
+	margin-left: 10px;
+}
+#relmovs{
+	margin-top: 10px;
+	margin-left: 10px;
+}
+#storyline{
+	margin-left: 10px;
+	text-indent:2em;
+}
+/* 评论部分 */
+.review{
+	width: 810px;
+	margin-top: 10px;
+}
+.section6, .section5{
+	margin-top: 10px;
+	margin-left: 10px;
+	width: 800px;
+}
+.reply_form textarea{
+	width: 99.2%;
+}
+.reply_form{
+	width: 98.6%;
+}
+.txt12 button{
+	color: black;
+	display: inline-block;
+	height: 30px;
+	border: 0px;
+	background-color: #FFFFFF;
+}
+.submit{
+	margin-top: 10px;
+	float: right;
+	width: 100px;
+	height: 30px;
+	background: #e86263;
+	border-width: 0px;
+	color: white;
+}
+#comment_content{
+	display: block;
+	width: 794px;
+	height: 88px;
+}
+#comment{
+	margin-top: 10px;
+}
+.rating_name{
+	margin-bottom: 10px;
+}
+
+#star,#time,#nickname{
+	display: inline-block;
+	color: #999999;
+	font-size: 14px;
+	width: auto;
+	margin-right: 10px;
+}
+.review_wrap{
+	margin-bottom: 16px;
+	position: relative;
+	top: 5px;
+}
+.feed button{
+	background-color: rgba(0, 0, 0, 0);
+	border: 0px;
+	float: right;
+	margin: 10px;
+}
+
+.comment_content_in_feed{
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+}
+.without_avatar{
+	width: 730px;
+	display: inline-block;
+	margin-left: 10px;
+}
+.circle{
+	display:inline-block;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: grey;
+	vertical-align: top;
+}
+
+#more_comments{
+	border: 0px;
+    background: #e86263;
+    color: white;
+    width: 800px;
+    height: 30px;
+}
+
+.feed hr{
+    background-color: #E862632a;
+    border: 0px;
+    height: 1px;
+}

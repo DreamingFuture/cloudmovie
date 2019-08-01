@@ -1,0 +1,208 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+    <meta charset="UTF-8">
+	<title>国内票房榜</title>
+	<style type="text/css">
+        .pagination-bar {
+            font-size: 0px;
+            padding: 20px 0px;
+            text-align: center;
+        }
+
+        .pagination-bar a {
+            display: inline-block;
+            padding: 5px 7.5px;
+            text-decoration: none;
+            min-width: 20px;
+            font-size: 16px;
+        }
+
+        .pagination-bar a:not(.disabled) {
+            background-color: #FFF;
+            color: #666;
+            border: 1px solid #BBBBBB;
+        }
+
+        .pagination-bar a.disabled {
+            background-color: #666;
+            color: #FFF;
+            border: 1px solid #444;
+        }
+
+        .page-prev {
+            border-radius: 15px 0px 0px 15px;
+        }
+
+        .page-next {
+            border-radius: 0px 15px 15px 0px
+        }
+
+        .pagination-bar span:not(.active) {
+            display: inline-block;
+            padding: 5px 7.5px;
+            font-size: 16px;
+        }
+
+		.homboxoff_list{
+		color: #ffffff;
+		}
+    </style>
+    <link rel="stylesheet" href={% static "css/index.css" %}>
+	<link rel="stylesheet" href={% static "css/iconfont.css" %}>
+	<link rel="stylesheet" href={% static "css/reset.css" %}>
+{% endblock %}
+
+{% block main %}
+    <div>
+        <div class="wrapper_text" style="font-size: 10px;">每天早上8点更新数据，统计昨日国内热映电影，并取评分前10</div>
+        <div class="center" style="width: 1220px; margin:0 auto;">
+            <span style="color: black; font-size: 30px; margin-top: 10px; float: left;" >云顶电影榜-国内票房榜</span>
+        </div>
+    </div>
+    <div id="wrapper">
+		<div id="content">
+			<div class="wrapper_box clearfloat">
+				<div class="aside">
+					<div>
+						<div>
+							<div class="box" style="height: 26px;width: 4px; border: 1px soild 0; background:red;display:inline-block;position: relative; top: 4px; margin-top: 40px " ></div>
+							<h3 style="display: inline-block; ">分类排行榜</h3>
+						</div>
+						<br>
+						<div class="types">
+							<span><a href="../ranking/?ranking=dra_list">剧情</a></span>
+							<span><a href="../ranking/?ranking=com_list">喜剧</a></span>
+							<span><a href="../ranking/?ranking=act_list">动作</a></span>
+							<span><a href="../ranking/?ranking=lov_list">爱情</a></span>
+							<span><a href="../ranking/?ranking=sci_list">科幻</a></span>
+							<span><a href="../ranking/?ranking=ani_list">动画</a></span>
+							<span><a href="../ranking/?ranking=mys_list">悬疑</a></span>
+							<span><a href="../ranking/?ranking=thr_list">惊悚</a></span>
+							<span><a href="../ranking/?ranking=hor_list">恐怖</a></span>
+							<span><a href="../ranking/?ranking=doc_list">纪录</a></span>
+							<span><a href="../ranking/?ranking=sho_list">短片</a></span>
+							<span><a href="../ranking/?ranking=adu_list">情色</a></span>
+							<span><a href="../ranking/?ranking=lov_list">同性</a></span>
+							<span><a href="../ranking/?ranking=mus_list">音乐</a></span>
+							<span><a href="../ranking/?ranking=rev_list">歌舞</a></span>
+							<span><a href="../ranking/?ranking=hom_list">家庭</a></span>
+							<span><a href="../ranking/?ranking=kid_list">儿童</a></span>
+							<span><a href="../ranking/?ranking=bio_list">传记</a></span>
+							<span><a href="../ranking/?ranking=his_list">历史</a></span>
+							<span><a href="../ranking/?ranking=war_list">战争</a></span>
+							<span><a href="../ranking/?ranking=cri_list">犯罪</a></span>
+							<span><a href="../ranking/?ranking=wes_list">西部</a></span>
+							<span><a href="../ranking/?ranking=fan_list">奇幻</a></span>
+							<span><a href="../ranking/?ranking=adv_list">冒险</a></span>
+							<span><a href="../ranking/?ranking=dis_list ">灾难</a></span>
+							<span><a href="../ranking/?ranking=sow_list">武侠</a></span>
+							<span><a href="../ranking/?ranking=cos_list">古装</a></span>
+							<span><a href="../ranking/?ranking=spo_list">运动</a></span>
+							<span><a href="../ranking/?ranking=noi_list">黑色电影</a></span>
+						</div>
+						<div id="dale_movie_chart_top_right"></div>
+						<div class="movie_top" id="ranking">
+							<div class="movie_top" id="ranking">
+								<div>
+									<div class="box" style="height: 26px;width: 4px; border: 1px soild 0; background:red;
+									        display:inline-block;position: relative; top: 4px; margin-top: 40px " ></div>
+									<h3 style="display: inline-block; ">周口碑榜
+									</h3>
+                                    <span class="box_chart_num1 color-gary" style="margin-top: 55px;">{{ refresh_date }}更新</span>
+								</div>
+								<br>
+								{% for info in info_pubpra %}
+                                <ul class="content" id="listCont2">
+									<li class="clearfloat">
+										<div class="no" style="font-size: 16px;">{{ info.ranking }}.</div>
+										<div class="name">
+											<a class="" onclick="moreurl(this,{from:'mv_week'})"  href="../detail/{{ info.movie_id }}">{{ info.title }}</a>
+
+                                        </div>
+										<span class="">
+											<div class="stay" style="margin-top: -25px">{{ info.others }}</div>
+										</span>
+									</li>
+								</ul>
+                                {% endfor %}
+							</div>
+							<div class="movie_top" id="ranking">
+								<div>
+									<div class="box" style="height: 26px;width: 4px; border: 1px soild 0; background:red;display:inline-block;position: relative; top: 4px; " ></div>
+									<h3 style="display: inline-block; margin-top: 40px">北美票房榜
+									</h3>
+                                    <span class="box_chart_num1 color-gray" style="margin-top: 50px;">{{ refresh_date }}更新/美元</span>
+								</div>
+								<br>
+								{% for info in info_ameboxoff %}
+                                <ul>
+									<li class="clearfloat">
+										<div class="no" style="font-size: 16px;" >{{ info.ranking }}.</div>
+										<div class="box_chart">
+											<a href="../detail/{{ info.movie_id }}" class="" onclick="moreurl(this,{form:'mv_us_week'})">{{ info.title }}</a>
+										</div>
+										<span class="box_chart_num color-gray" style="margin-top: -25px">{{ info.others }}w</span>
+									</li>
+								</ul>
+                                {% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="article">
+					<div class="indent">
+						{% for info in info_homboxoff %}
+                        <div class="">
+                            <!-- 第一步 -->
+							<p class="ul first"></p>
+							<table width="100%" class="">
+								<tbody>
+									<tr class="item">
+										<td width="200" valign="top">
+											<a title="" class="nbg"  href="../detail/{{ info.movie_id }}/">
+												<img  width="150" src="{{ info.poster }}" id="poster" alt=""><!-- 照片 -->
+											</a>
+										</td>
+										<td valign="p12">
+                                            <div class="p11">
+                                                <a id="title"  href="../detail/{{ info.movie_id }}/" style="font-size: 30px;">{{ info.ranking }}.{{ info.title }}</a><br><br>
+                                                导演：<span id="directors">{{ info.directors }}</span><br><br>
+                                                编剧：<span id="stars" style="font-size:14px; ">{{ info.writers }}</span><br><br>
+                                                上映日期：<span id="release_date">{{ info.release_date }}</span>
+                                            </div>
+											<div class="star clearfloat">
+												<span id="others" style="color: red;font-size: 50px; margin-top:-10px;" >{{ info.box_now }}w</span>
+												<br>
+												<span id="rating_count" style="float: right";>总票房:{{ info.box_total }}w</span>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function up_down_color(){
+			var ranking=document.getElementsByClassName("stay");
+
+			for (i = 0; i < ranking.length; i++){
+				if (ranking[i].innerHTML == "-0"){
+					ranking[i].innerHTML = "&nbsp;&nbsp;0";
+				}
+				else if (ranking[i].innerHTML.indexOf("+") == -1){
+					ranking[i].style.color="green";
+				}
+				else if (ranking[i].innerHTML.indexOf("-") == -1){
+					ranking[i].style.color="#e86263";
+				}
+			}
+		}
+		up_down_color();
+	</script>
+{% endblock %}

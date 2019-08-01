@@ -1,0 +1,274 @@
+ 
+#header{
+	width: 100%;
+	background: #222222;
+	height: 90px;
+}
+ #center{
+	width: 1220px;
+	margin: 0 auto;
+ }
+
+#header_logo_pic{
+	display: inline-block;
+}
+ #header_logo_text{
+	display: inline-block;
+	margin-left: 10px;
+	color: #fff;
+	position: relative;
+	top: -30px;
+ }
+
+ #header_text_box{
+ 	display: inline-block;
+ }
+  #header_text1{
+  	position: relative;
+	top: -54px;
+	margin-left: 320px;
+ 	display: inline-block;
+ }
+ #header_text1 a{
+ 	color: #939393;
+ }
+ #header_text{
+ 	position: relative;
+	top: -54px;
+	margin-left: 46px;
+ 	display: inline-block;
+ 	text-align: center;
+ 	
+ }
+ #header_text a{
+ 	color: #939393;
+ }
+#header_search{
+	float: right;
+	margin-top:-60px;
+
+}
+#header_search_text{
+	width: 145px;
+	height: 18px;
+	background-color:#222222;
+	outline-style:none;
+	border-style: none;
+}
+#iconfont .icon-search{
+	font-size: 16px;
+	color: #939393;
+	margin-top:22px; 
+}
+#header_search_button{
+	background-color: #222222;
+	border:none;
+	outline-style: none;
+	height: 14px;
+	width: 27px;
+	cursor: pointer;
+	transform:translateX(-6px);
+}
+#search1{
+	padding-top: 4px;
+	padding-left: 10px;
+}
+#search2{
+	padding-left: 16px;
+}
+#header_search a{
+	color:  #939393;
+}
+#header_search a :hover{
+	color: #2d3e50;
+}
+
+
+
+/*排行榜*/
+#wrapper{
+	width: 1220px;
+	margin: 0 auto;
+}
+.wrapper_text{
+    position: absolute;
+    left: 50%;
+    margin-left: -138px;
+    background-color: white;
+}
+#content{
+	min-height: 420px;
+}
+.wrapper_box .clearfloat{
+	display: block;
+}
+.wrapper_box  .article{
+	width: 800px;
+	float: left;
+	padding-right: 40px;
+}
+.indent{
+	word-break: break-all;
+}
+.ul{
+	border-bottom: 1px dashed #dddddd;
+}
+
+.table{
+	border-collapse: collapse;
+	border:none;
+	padding: 0;
+	margin: 0;
+}
+hr{
+	background-color: #E862632a;
+	border: 0px;
+    height: 1px;
+}
+/* .a:visited{
+	color: #666699;
+} */
+.a {
+	cursor: pointer;
+}
+.a :link{
+	color: #37a;
+	text-decoration: none;
+}
+.a img{
+	border-width: 0;
+	vertical-align: middle;
+	max-width: 100%;
+}
+.p12{
+	font-size: 14px Arial,Helvetica,sans-serif;
+	line-height: 150%;
+	color: #666666;
+	width:300px;
+}
+.p11{
+	width: 420px;
+	display: inline-block;
+}
+#directors{
+	white-space: normal;
+	font-size: 14px Arial,Helvetica,sans-serif;
+	line-height: 150%;
+	color: #666666;
+}
+#ranking{
+	width: 290px;
+}
+#refresh_date{
+	font-size: 12px;
+}
+.star {
+	/*display: block;*/
+	font-size: 20px;
+	float: right;
+	margin-top: 20px;
+}
+#others{
+	padding-top: 0px;
+}
+#rating_count{
+	color: black;
+	font-size: 12px;
+	padding: 0 3px;
+}
+.rating_nums{
+	color: #e7a062;
+	font-size: 20px;
+	padding: 0 3px;
+}
+/* 侧栏总 */
+.name{
+	text-overflow: ellipsis;
+    overflow: hidden;
+	white-space: nowrap;
+	width: 200px;
+}
+/*侧栏第一部分*/
+.aside{
+	width: 290px;
+	float: right;
+	/*padding-left: 200px;*/
+	/*padding-top: -400px;*/
+}
+.aside .types{
+	margin-bottom: 20px;
+}
+.types span{
+	display: inline-block;
+	margin:  5px 10px 5px 0;
+	min-width: 36px;
+
+}
+/* a:visited{
+	color: #666699;
+} */
+a{
+	cursor: pointer;
+	color: black;
+
+}
+/*侧栏第二部分*/
+.movie_top{
+	margin-bottom: 30px;
+}
+.box_chart_num{
+	font-size: 12px;
+	color: #000000;
+	float: right;
+    margin-right: 30px;
+}
+.movie_top ul li{
+	padding: 0 0 7px 0;
+	margin-bottom: 7px;
+	
+	line-height: 24px;
+}
+.movie_top ul li div.no{
+	float: left;
+	font-size: 9px;
+	width: 20px;
+	text-align: center;
+	margin-right: 2px;
+}
+.stay{
+	background-position: 0px 10px;
+}
+.movie_top ul li div.stay{
+	color: #bdbdbd;
+	width: 20px;
+	float: right;
+	display: block;
+	font-size: 16px;
+	padding-left: 15px;
+    margin-right: 40px;
+}
+.movie_top ul li div.up{
+	color: #e24049;
+	width: 20px;
+	float: right;
+	display: block;
+	font-size: 16px;
+	padding-left: 15px;
+	margin-top: -14px;
+}
+.movie_top ul li div.down{
+	color: #73ea56;
+	width: 20px;
+	float: right;
+	display: block;
+	font-size: 16px;
+	padding-left: 15px;
+	margin-top: -14px;
+}
+.box_chart_num1 {
+	font-size: 10px;
+	color: #000000;
+	float: right;
+	position: relative;
+	right: 30px;
+}

@@ -1,0 +1,205 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>个人中心</title>
+<link rel="stylesheet" href={% static 'css/space.css' %}>
+<link rel="stylesheet" href={% static 'css/reset.css' %}>
+<script src="{% static 'js/jquery.js' %}"></script>
+{% endblock %}
+{% block main %}
+<div class="main">
+	<div id="left">
+		<div id="part_one">
+			<div class="subheading">
+				<div class="redbox"></div>
+				<div class="subheading_text">个人资料</div>
+			</div>
+			<div class="content">
+				<div id="avatar_box">
+					<img id="avatar">
+					<div id="set_avatar" class="file">
+						<div class="setavatar_text">修改头像</div>
+						<input type="file" name="avatar" accept=".jpeg, .jpg" enctype="multipart/form-data" id="upLoad">
+					</div>
+				</div>
+				<input autocomplete="off" type="text" name="nickname" class="nickname" placeholder=""
+					onchange="set_nickname()">
+			</div>
+		</div>
+		<div id="part_two">
+			<div class="subheading">
+				<div class="redbox"></div>
+				<div class="subheading_text">账号资料</div>
+			</div>
+			<div class="phone_number">手机号: xxxx</div>
+			<div class="password">
+				<div id="password_text" style="display: inline-block;">密码:&nbsp;</div>
+				<form autocomplete="off" style="display: inline-block">
+					<input type="password" name="password" id="password" placeholder="xxxxxx">
+					<input type="button" onclick="reset_password()"
+						style="color: #E86263; background-color: #f5deb300; border: 0px;" value="修改密码">
+				</form>
+			</div>
+			<div id="tip"></div>
+		</div>
+	</div>
+	<div class="right">
+		<div class="subheading" style="margin-top: 10px;">
+			<div class="redbox"></div>
+			<div class="subheading_text">我的点评</div>
+		</div>
+		<div class="detail"></div>
+		<button id="more_comments" onclick="more_comments()">点击加载更多</button>
+	</div>
+</div>
+<script>
+	var content = {{ doc| safe }};
+	num = 0;
+	var nickname = content["nickname"];
+	var phone_number = content["phone_number"];
+	var avatar = content["avatar_url"];
+	var comments = content["comments"];
+
+	document.getElementsByClassName("detail")[0].innerHTML = "";
+	get_comment(comments);
+
+	document.getElementsByClassName("nickname")[0].placeholder = nickname;
+	document.getElementsByClassName("phone_number")[0].innerHTML = "手机号:&nbsp;" + phone_number;
+	document.getElementById("avatar").src = avatar;
+
+	function more_comments() {
+		num++;
+		var comments = new XMLHttpRequest();
+
+		comments.responseURL = "/account/more_comments/";
+		comments.open("post", "/account/more_comments/", true);
+		comments.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		comments.send("num=" + num);
+		comments.onreadystatechange = function () {
+			if (comments.readyState == 4 && comments.status == 200) {
+				var content = JSON.parse(comments.responseText);
+				if (content && content.length) {
+					get_comment(content);
+				}
+				else {
+					document.getElementById("more_comments").innerHTML = "已加载全部";
+					document.getElementById("more_comments").onclick = NaN;
+				}
+			}
+		}
+	}
+
+	function get_comment(comments) {
+		for (i = 0; comments && i < comments.length; i++) {
+			each = comments[i];
+			var my_comment = document.getElementsByClassName("detail")[0];
+			var each_feed = document.createElement("div");
+			var content_in_feed = document.createElement("p");
+			var title_in_feed = document.createElement("div");
+			var date_in_feed = document.createElement("div");
+			var like_count_in_feed = document.createElement("div1");
+			var hr = document.createElement("hr");
+
+			each_feed.className = "comment";
+			each_feed.style.display = "block"
+			content_in_feed.innerHTML = each["content"];
+			title_in_feed.innerHTML = each["title"];
+
+			if (title_in_feed.innerHTML) {
+				title_in_feed.innerHTML = title_in_feed.innerHTML + "&nbsp;&nbsp;";
+			}
+			date_in_feed.innerHTML = each["time"];
+			like_count_in_feed.innerHTML = "赞&nbsp;" + each["like_count"];
+
+			each_feed.appendChild(content_in_feed);
+			each_feed.appendChild(title_in_feed);
+			each_feed.appendChild(date_in_feed);
+			each_feed.appendChild(like_count_in_feed);
+			each_feed.appendChild(hr);
+
+			my_comment.appendChild(each_feed);
+		}
+	}
+
+	function reset_password() {
+		var password = document.getElementById("password").value;
+		var tip = document.getElementById("tip");
+
+		if (password == "") {
+			tip.innerHTML = "请输入密码!"
+		}
+		else if (password.length < 6) {
+			tip.innerHTML = "密码过短!"
+		}
+		else {
+			var form_submit = new XMLHttpRequest;
+			form_submit.open("POST", "../reset_password/", true);
+			form_submit.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			form_submit.send("password=" + password);
+			form_submit.onreadystatechange = function () {
+				if (form_submit.readyState == 4 && form_submit.status == 200) {
+					var content = form_submit.responseText
+					if (content == "200") {
+						tip.innerHTML = "密码修改成功! 即将返回登录页面.";
+						setTimeout("window.location.href = '../login/'", 3000);
+					}
+				}
+			}
+		}
+	}
+
+	function set_nickname() {
+		var nickname = document.getElementsByClassName("nickname")[0].value;
+
+		var form_submit = new XMLHttpRequest;
+		form_submit.open("GET", "../set_nickname/?nickname=" + nickname, true);
+		form_submit.send();
+		form_submit.onreadystatechange = function () {
+			if (form_submit.readyState == 4 && form_submit.status == 200) {
+				var content = form_submit.responseText
+				if (content == "200") {
+					tip.innerHTML = "昵称修改成功! 即将刷新.";
+					setTimeout("window.location.href = '../space/'", 3000);
+				}
+			}
+		}
+	}
+
+	//创建fileLoad方法用来上传文件
+	function fileLoad(ele) {
+		//创建一个formData对象
+		var formData = new FormData();
+		//获取传入元素的val
+		var name = $(ele).val();
+		//获取files
+		var files = $(ele)[0].files[0];
+		//将name 和 files 添加到formData中，键值对形式
+		formData.append("avatar", files);
+		formData.append("name", name);
+		$.ajax({
+			url: "../set_avatar/",
+			type: 'POST',
+			data: formData,
+			processData: false, //告诉jQuery不要去处理发送的数据
+			contentType: false, //告诉jQuery不要去设置Content-Type请求头
+			success: function (responseStr) {
+				document.getElementById("tip").innerHTML = "头像修改成功! 即将刷新.";
+				setTimeout("window.location.href = '../space/'", 3000);
+			}
+		});
+	}
+
+	$(function () {
+		var $input = $("#upLoad");
+		//为input设定change事件
+		$input.change(function () {
+			//如果value不为空，调用文件加载方法
+			if ($(this).val() != "") {
+				fileLoad(this);
+			}
+		})
+	})
+</script>
+{% endblock %}

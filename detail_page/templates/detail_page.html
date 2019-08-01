@@ -1,0 +1,708 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+<meta charset="UTF-8">
+<title>电影详情</title>
+<link rel="stylesheet" href={% static 'css/detail_page.css' %}>
+<link rel="stylesheet" href={% static 'css/reset.css' %}>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/H-ui.js' %}"></script>
+<style>
+	.star-bar-show {
+		background: url({% static 'img/iconpic-star-S-default.png' %}) repeat-x 0 0
+	}
+
+	.star-bar-show .star {
+		background: url({% static 'img/iconpic-star-S.png' %}) repeat-x 0 0
+	}
+
+	.star-1 {
+		width: 20%
+	}
+
+	.star-2 {
+		width: 40%
+	}
+
+	.star-3 {
+		width: 60%
+	}
+
+	.star-4 {
+		width: 80%
+	}
+
+	.star-5 {
+		width: 100%
+	}
+
+	.star-bar-show.size-M {
+		width: 120px;
+		height: 24px
+	}
+
+	.star-bar-show.size-M,
+	.star-bar-show.size-M .star {
+		background-size: 24px;
+		margin-bottom: 5px;
+	}
+
+	.clearfix {
+		display: inline-block;
+		margin-bottom: 10px;
+		margin-left: 10px;
+	}
+
+	.star-bar-show.size-M .star {
+		height: 24px
+	}
+
+	.star-bar-show.size-S {
+		margin-bottom: 5px;
+		width: 80px;
+		height: 16px
+	}
+
+	.star-bar-show.size-S,
+	.star-bar-show.size-S .star {
+		background-size: 16px
+	}
+
+	.star-bar-show.size-S .star {
+		height: 16px
+	}
+
+
+	.star-bar {
+		font-size: 0;
+		line-height: 0
+	}
+
+	.star-bar .star {
+		display: inline-block;
+		text-align: center
+	}
+
+	/*中*/
+	.size-M img {
+		width: 24px;
+		height: 24px
+	}
+
+	/*小*/
+	.size-S img {
+		width: 16px;
+		height: 16px
+	}
+</style>
+{% endblock %}
+{% block main %}
+<div class="main">
+	<div id="wrapper">
+		<table width="100%" class="background">
+			<tr class="item">
+				<td width="200" valign="top" style=vertical-align:middle>
+					<img src="" id="poster" alt="">
+				</td>
+				<!-- 照片 -->
+				<td valign="p12" style="width: 500px;">
+					<p id="title"></p>
+					<!-- 标题 -->
+					<p id="directors"></p>
+					<!-- 导演 -->
+					<p id="writers"></p>
+					<!-- 编剧 -->
+					<p id="genres"></p>
+					<!-- 类型 -->
+					<p id="coungion"></p>
+					<!-- 制片国家/地区 -->
+					<p id="language"></p>
+					<!-- 语言 -->
+					<p id="release_date"></p>
+					<!-- 上映日期 -->
+					<p id="runtime"></p>
+					<!-- 片长 -->
+				</td>
+				<td>
+					<div class="movie_rating">
+						<div class="comment">用户评分</div>
+						<div id="rating" style="display: inline-block;"></div>
+						<div class="clearfix">
+							<div class="star-bar star-bar-show size-M f-l va-m mr-10">
+								<div class="star" style="width:82%"></div>
+							</div>
+							<div id="rating_count" style="display: inline-block"></div>
+						</div>
+						<!-- xxx人评价 -->
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="middle">
+		<div class="banner_right">
+			<div class="section1">
+				<div class="subheading">
+					<div class="redbox"></div>
+					<div class="subheading_text">剧情简介</div>
+				</div>
+				<div id="storyline"></div>
+			</div>
+			<div class="section2">
+				<div class="section2_a">
+					<div class="subheading">
+						<div class="redbox"></div>
+						<div class="subheading_text">演职人员</div>
+					</div>
+					<div id="casts"></div> <!--  演职人员内容 -->
+				</div>
+			</div>
+			<div class="section3">
+				<div class="section3_a">
+					<div class="subheading">
+						<div class="redbox"></div>
+						<div class="subheading_text">剧照</div>
+					</div>
+					<div class="HD_pic" onclick="hide_HD_pic()">
+						<img src="../../image/stills/?movie_id=1485260&file_name=p1324006281" alt="" id="HD_pic"
+							style="margin: auto;right: 0px;left: 0px;top: 0px;bottom: 0px;z-index: 999;position: fixed;height: 700px;">
+					</div>
+					<div id="stills"></div>
+				</div>
+			</div>
+		</div>
+		<div class="banner_left">
+			<div class="section4">
+				<div class="subheading">
+					<div class="redbox"></div>
+					<div class="subheading_text">相关电影</div>
+				</div>
+				<div id="relmovs"></div>
+			</div>
+		</div>
+	</div>
+	<div class="review">
+		<div class="review_wrap">
+			<div class="subheading">
+				<div class="redbox"></div>
+				<div class="subheading_text">影评</div>
+			</div>
+			<div></div> <!-- 评论数 -->
+		</div>
+		<div class="section5">
+			<div class="input">
+				<div class="clearfix" style="margin-left: 0px">
+					<div id="star-1" class="star-bar size-M f-l mr-10 va-m"></div>
+					<strong id="result-1" class="f-l va-m"></strong>
+				</div>
+				<textarea type="text" name="content" id="comment_content"></textarea>
+				<input type="submit" onclick="add_id_and_title()" class="submit" value="提交">
+				<input type="hidden" name="_id" id="_id" />
+				<input type="hidden" name="title" id="title" />
+			</div>
+			<!-- 评论输入框 -->
+		</div>
+		<div class="section6">
+			<div class="txt12">
+				<button onclick="get_comment('new')">最新</button>
+				<button onclick="get_comment('hot')">热门</button>
+				<button onclick="get_comment_sorted_by_level()">楼层</button>
+			</div>
+			<div id="comment"></div>
+			<!-- 评论内容 -->
+			<button id="more_comments"></button>
+		</div>
+	</div>
+</div>
+<script>
+	function hide_HD_pic() {
+		document.getElementsByClassName("HD_pic")[0].style.display = "none";
+	}
+
+	function add_total_for_casts() {
+		var total = document.createElement("a");
+		total.href = "casts/";
+		total.innerHTML = "全部";
+		document.getElementById('casts').appendChild(total);
+	}
+
+	function add_total_for_stills() {
+		var total = document.createElement("a");
+		total.href = "stills/";
+		total.innerHTML = "全部";
+		document.getElementById('stills').appendChild(total);
+	}
+
+	function comment_cancel() {
+		event.srcElement.parentElement.parentElement.remove();
+	}
+
+	function add_id_and_title() {
+		document.getElementById('_id').value = movie_id;
+		document.getElementById('title').value = title;
+		var content = document.getElementById("comment_content");
+		var rating = document.getElementsByName("score")[0];
+
+		if (rating.value == "") {
+			alert("请输入评分!")
+			return 0;
+		}
+		else if (content.value == "") {
+			content.placeholder = "请输入评论!"
+			return 0;
+		}
+		else if (Number(rating.value) > 10 || Number(rating.value) < 0) {
+			rating.value = "";
+			rating.placeholder = "评分不正确!";
+			return 0;
+		}
+
+		comment = new XMLHttpRequest();
+		comment.open("POST", "../comment/", true);
+		comment.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		comment.send("content=" + content.value + "&rating=" + String(Number(rating.value) * 2) + "&_id=" + movie_id);
+		comment.onreadystatechange = function () {
+			if (comment.readyState == 4 && comment.status == 200) {
+				if (comment.responseText == "200") {
+					location.reload();
+				}
+				else if (comment.responseText == "201") {
+					alert("已经提交过评论!")
+				}
+			}
+		}
+	}
+
+	function add_id() {
+		var content = document.getElementsByTagName("textarea")[1];
+
+		if (content.value == "") {
+			content.placeholder = "请输入评论!"
+			return false;
+		}
+
+		comment = new XMLHttpRequest();
+		comment.open("POST", "../comment/", true);
+		comment.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		comment.send("content=" + content.value + "&_id=" + event.srcElement.parentElement.id);
+		comment.onreadystatechange = function () {
+			if (comment.readyState == 4 && comment.status == 200) {
+				if (comment.responseText == "200") {
+					location.reload(true);
+				}
+				else if (comment.responseText == "205") {
+					window.location.href = '/account/login/';
+				}
+			}
+		}
+
+		return false;
+	}
+
+	function append_casts(list, occupation) {
+		var i
+		var extend_info = document.getElementById('casts');
+		var each_duty = document.createElement("div");
+		var duty = document.createElement("div");
+		each_duty.className = "each_duty";
+		duty.innerHTML = occupation;
+		each_duty.appendChild(duty);
+		for (i = 0; i < list.length; i++) {
+			var each_people = document.createElement("div");
+			each_people.className = "each_people";
+			var name = document.createElement("div");
+			var img = document.createElement("img");
+			name.innerHTML = list[i]["name"];
+			img.src = "../.." + list[i]["url"];
+			img.height = "150";
+			img.width = "100";
+			each_people.appendChild(img);
+			each_people.appendChild(name);
+			each_duty.appendChild(each_people);
+		};
+		extend_info.appendChild(each_duty);
+	}
+
+	function append_stills(stills_url) {
+		var i
+		var extend_info = document.getElementById('stills');
+		for (i = 0; i < stills_url.length; i++) {
+			var each_still = document.createElement("div");
+			var img = document.createElement("img");
+
+			each_still.className = "still";
+			img.src = "../.." + stills_url[i];
+			img.height = "100";
+			img.width = "100";
+			img.onclick = function () {
+				document.getElementsByClassName("HD_pic")[0].style.display = "block";
+				document.getElementById("HD_pic").src = this.src.replace("stills_thumbnail", "stills");
+			}
+
+			each_still.appendChild(img);
+			extend_info.appendChild(each_still);
+		};
+	}
+
+	function append_relmovs(relmovpos) {
+		var i
+		var extend_info = document.getElementById('relmovs');
+		for (i = 0; i < relmovpos.length; i++) {
+			var each_mov = document.createElement("div");
+			var title = document.createElement("div");
+			var img = document.createElement("img");
+
+			each_mov.className = "movie";
+			title.innerHTML = relmovpos[i]["title"];
+			title.className = "title";
+			img.src = "../.." + relmovpos[i]["url"];
+			img.height = "150";
+			img.width = "100";
+
+			each_mov.appendChild(img);
+			each_mov.appendChild(title);
+			extend_info.appendChild(each_mov);
+		};
+	}
+
+	function get_comment(basis, num = 0) {
+		var comment;
+		var like_it;
+		var comment_form;
+		var i;
+
+		comment_form = document.createElement("div");
+		comment_form.innerHTML = '<form onsubmit="return add_id()"><textarea name="content" placeholder="人人都喜欢友善的评论." type="text"></textarea><input name="_id" id="_id_in_form" type="hidden"><br><button type="button" onclick="comment_cancel()">取消</button><input type="submit" value="提交" style="float:right;background-color:#FFFFFF;border:0px;margin-top:10px;"></form>';
+		comment = new XMLHttpRequest();
+		comment.open("get", "get_comment/?basis=" + basis + "&num=" + num, true);
+		comment.send();
+		comment.onreadystatechange = function () {
+			if (comment.readyState == 4 && comment.status == 200) {
+				comment = JSON.parse(comment.responseText);
+				num == 0 && (document.getElementById("comment").innerHTML = "");
+
+				if (comment.length == 0 || comment == 0) {
+					document.getElementById("more_comments").innerHTML = "已加载全部";
+					document.getElementById("more_comments").onclick = NaN;
+				}
+
+				for (i = 0; i < comment.length; i++) {
+					var feed = document.createElement("div");
+					feed.className = "feed";
+
+					var publish_date = comment[i]["publish_date"];
+					var nickneme = comment[i]["nickneme"];
+					var content = comment[i]["content"];
+					var like_count = comment[i]["like_count"];
+					var rating = comment[i]["rating"];
+					var avatar_url = comment[i]["avatar_url"];
+					var user_phone_number = comment[i]["user_phone_number"];
+					var _id = comment[i]["_id"];
+
+					var avatar_in_feed = document.createElement("img");
+					avatar_in_feed.className = "circle";
+					avatar_in_feed.src = avatar_url;
+					var without_avatar = document.createElement("div");
+					without_avatar.className = "without_avatar";
+					var content_in_feed = document.createElement("div");
+					content_in_feed.className = "comment_content_in_feed";
+					content_in_feed.innerHTML = content;
+					var rating_in_feed = document.createElement("div");
+					rating_in_feed.className = "clearfix";
+					rating_in_feed.style.marginRight = "10px";
+					rating_in_feed.style.marginLeft = "0px";
+					rating_in_feed.style.marginBottom = "0px";
+					rating_in_feed.style.height = "18px";
+					rating_in_feed.style.verticalAlign = "top";
+					rating_in_feed.innerHTML = rating ? ('<div class="star-bar star-bar-show size-M f-l va-m mr-10" style="background-size: 18px;width: 90px;height: 18px;"><div class="star" style="width: ' + String(Number(rating * 10)) + '%;height: 18px;background-size: 18px;margin-bottom: 0px"></div></div>') : "";
+					// rating_in_feed.innerHTML = rating ? rating : "";
+					var publish_date_in_feed = document.createElement("div");
+					publish_date_in_feed.id = "time";
+					publish_date_in_feed.innerHTML = publish_date;
+					var nickneme_in_feed = document.createElement("div");
+					nickneme_in_feed.id = "nickname";
+					nickneme_in_feed.innerHTML = nickneme;
+					var like_it_in_feed = document.createElement("button");
+					like_it_in_feed.innerHTML = "赞&nbsp;" + like_count;
+					like_it_in_feed.style.width = "50px";
+					like_it_in_feed.className = _id;
+					like_it_in_feed.id = "click";
+					like_it_in_feed.onclick = function () {
+						like_it = new XMLHttpRequest();
+						like_it.open("POST", "../like_it/", true);
+						like_it.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+						like_it.send("_id=" + this.className);
+						like_count = String(Number(document.getElementsByClassName(this.className)[0].innerHTML.split(";")[1]) + 1);
+						this.innerHTML = "赞&nbsp;" + like_count;
+						this.style.color = "#E86263";
+					}
+					var reply_in_feed = document.createElement("button");
+					reply_in_feed.id = "reply_in_feed";
+					reply_in_feed.innerHTML = "回复";
+					reply_in_feed.className = _id;
+					reply_in_feed.onclick = function () {
+						try {
+							document.getElementsByClassName("reply_form")[0].remove();
+						}
+						finally {
+							var comment_copy = comment_form.cloneNode(true);
+							comment_copy.className = "reply_form";
+							comment_copy.id = event.srcElement.className;
+							event.srcElement.parentElement.appendChild(comment_copy);
+						}
+					}
+
+					without_avatar.appendChild(nickneme_in_feed);
+					without_avatar.appendChild(rating_in_feed);
+					without_avatar.appendChild(publish_date_in_feed);
+					without_avatar.appendChild(like_it_in_feed);
+					without_avatar.appendChild(reply_in_feed);
+					without_avatar.appendChild(content_in_feed);
+					feed.appendChild(avatar_in_feed);
+					feed.appendChild(without_avatar);
+					feed.appendChild(document.createElement("hr"));
+					document.getElementById("comment").appendChild(feed);
+				}
+			}
+		}
+
+		document.getElementById("more_comments").innerHTML = "点击加载更多";
+		document.getElementById("more_comments").onclick = function () {
+			get_comment(basis, ++num);
+		}
+	}
+
+	function get_comment_sorted_by_level(num = 0) {
+		var comment;
+		var like_it;
+		var comment_form;
+		var child_comment;
+		var i;
+
+		child_comment = document.createElement("div");
+		child_comment.className = "chile_comment";
+		child_comment.style.backgroundColor = "#eceded";
+		child_comment.style.marginTop = "10px";
+		comment_form = document.createElement("div");
+		comment_form.innerHTML = '<form onsubmit="return add_id()"><textarea name="content" placeholder="人人都喜欢友善的评论." type="text"></textarea><input name="_id" id="_id_in_form" type="hidden"><br><button type="button" onclick="comment_cancel()">取消</button><input type="submit" value="提交" style="float:right;background-color:rgba(0, 0, 0, 0);border:0px;margin-top:10px;"></form>';
+		comment = new XMLHttpRequest();
+		comment.open("get", "get_comment/?basis=level" + "&num=" + num, true);
+		comment.send();
+		comment.onreadystatechange = function () {
+			if (comment.readyState == 4 && comment.status == 200) {
+				comment = JSON.parse(comment.responseText);
+				num == 0 && (document.getElementById("comment").innerHTML = "");
+
+				for (i = 0; i < comment.length; i++) {
+					var feed = document.createElement("div");
+					feed.className = "feed";
+
+					var publish_date = comment[i]["publish_date"];
+					var nickneme = comment[i]["nickneme"];
+					var content = comment[i]["content"];
+					var like_count = comment[i]["like_count"];
+					var rating = comment[i]["rating"];
+					var avatar_url = comment[i]["avatar_url"];
+					var user_phone_number = comment[i]["user_phone_number"];
+					var _id = comment[i]["_id"];
+
+					var avatar_in_feed = document.createElement("img");
+					avatar_in_feed.className = "circle";
+					avatar_in_feed.src = avatar_url;
+					var without_avatar = document.createElement("div");
+					without_avatar.className = "without_avatar";
+					without_avatar.style.width = "720px";
+					var content_in_feed = document.createElement("div");
+					content_in_feed.className = "comment_content_in_feed";
+					content_in_feed.innerHTML = content;
+					var rating_in_feed = document.createElement("div");
+					rating_in_feed.className = "clearfix";
+					rating_in_feed.style.marginRight = "10px";
+					rating_in_feed.style.marginLeft = "0px";
+					rating_in_feed.style.marginBottom = "0px";
+					rating_in_feed.style.height = "18px";
+					rating_in_feed.style.verticalAlign = "top";
+					rating_in_feed.innerHTML = rating ? ('<div class="star-bar star-bar-show size-M f-l va-m mr-10" style="background-size: 18px;width: 90px;height: 18px;"><div class="star" style="width: ' + String(Number(rating * 10)) + '%;height: 18px;background-size: 18px;margin-bottom: 0px"></div></div>') : "";
+					var publish_date_in_feed = document.createElement("div");
+					publish_date_in_feed.id = "time";
+					publish_date_in_feed.style.color = "#000000";
+					publish_date_in_feed.innerHTML = publish_date;
+					var nickneme_in_feed = document.createElement("div");
+					nickneme_in_feed.id = "nickname";
+					nickneme_in_feed.style.color = "#000000";
+					nickneme_in_feed.innerHTML = nickneme;
+					var like_it_in_feed = document.createElement("button");
+					like_it_in_feed.innerHTML = "赞&nbsp;" + like_count;
+					like_it_in_feed.style.backgroundColor = "rgba(0, 0, 0, 0)";
+					like_it_in_feed.style.width = "50px";
+					like_it_in_feed.className = _id;
+					like_it_in_feed.id = "click";
+					like_it_in_feed.onclick = function () {
+						like_it = new XMLHttpRequest();
+						like_it.open("POST", "../like_it/", true);
+						like_it.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+						like_it.send("_id=" + this.className);
+						like_count = String(Number(document.getElementsByClassName(this.className)[0].innerHTML.split(";")[1]) + 1);
+						this.innerHTML = "赞&nbsp;" + like_count;
+						this.style.color = "#E86263";
+					}
+					var reply_in_feed = document.createElement("button");
+					reply_in_feed.id = "reply_in_feed";
+					reply_in_feed.innerHTML = "回复";
+					reply_in_feed.style.backgroundColor = "rgba(0, 0, 0, 0)";
+					reply_in_feed.className = _id;
+					reply_in_feed.onclick = function () {
+						try {
+							document.getElementsByClassName("reply_form")[0].remove();
+						}
+						finally {
+							var comment_copy = comment_form.cloneNode(true);
+							comment_copy.className = "reply_form";
+							comment_copy.id = event.srcElement.className;
+							event.srcElement.parentElement.appendChild(comment_copy);
+						}
+					}
+
+					if (i < comment.length - 1) {
+						feed.style.paddingTop = "10px";
+						without_avatar.style.width = "710px";
+
+						var hr = document.createElement("hr");
+						hr.style.margin = "0px 10px";
+
+						without_avatar.appendChild(nickneme_in_feed);
+						rating && without_avatar.appendChild(rating_in_feed);
+						without_avatar.appendChild(publish_date_in_feed);
+						without_avatar.appendChild(like_it_in_feed);
+						without_avatar.appendChild(reply_in_feed);
+						without_avatar.appendChild(content_in_feed);
+						feed.appendChild(without_avatar);
+						feed.appendChild(hr);
+						child_comment.appendChild(feed);
+					}
+					else {
+						without_avatar.appendChild(nickneme_in_feed);
+						rating && without_avatar.appendChild(rating_in_feed);
+						without_avatar.appendChild(publish_date_in_feed);
+						without_avatar.appendChild(like_it_in_feed);
+						without_avatar.appendChild(reply_in_feed);
+						without_avatar.appendChild(child_comment);
+						without_avatar.appendChild(content_in_feed);
+						feed.appendChild(avatar_in_feed);
+						feed.appendChild(without_avatar);
+						feed.appendChild(document.createElement("hr"));
+						document.getElementById("comment").appendChild(feed);
+					}
+
+					document.getElementById("more_comments").innerHTML = "点击加载更多";
+					document.getElementById("more_comments").onclick = function () {
+						get_comment_sorted_by_level(++num);
+					}
+				}
+			}
+			else if (comment.readyState == 4 && comment.status == 500) {
+				document.getElementById("more_comments").innerHTML = "已加载全部";
+				document.getElementById("more_comments").onclick = NaN;
+			}
+		}
+	}
+
+	var content = {{ doc| safe  }}
+	var movie_id = content["movie_id"];
+	var title = content["title"];
+	var directors = content["directors"];
+	var writers = content["writers"];
+	var poster = content["poster"];
+	var coungion = content["coungion"];
+	var runtime = content["runtime"];
+	var language = content["language"];
+	var release_date = content["release_date"];
+	var rating = content["rating"];
+	var rating_count = content["rating_count"];
+	var storyline = content["storyline"];
+	var stars = content["stars"];
+	var relmovpos = content["relmovpos"];
+	var stills_url = content["stills_url"];
+	var genres = content["genres"];
+	var photo_director = content["photo_director"];
+	var photo_stars = content["photo_stars"];
+	var basis = "new";
+
+	document.getElementsByClassName("background")[0].style.background = "url(/image/background/?movie_id=" + movie_id + ")no-repeat";
+	document.getElementsByClassName("background")[0].style.backgroundSize = "100% 100%";
+
+	var ele_title = document.getElementById("title");
+	ele_title.innerHTML = title;
+	var ele_poster = document.getElementById("poster");
+	ele_poster.src = "../.." + poster;
+
+	directors && (document.getElementById("directors").innerHTML = "导演:&nbsp;" + directors);
+	writers && (document.getElementById("writers").innerHTML = "编剧:&nbsp;" + writers);
+	genres && (document.getElementById("genres").innerHTML = "类型:&nbsp;" + genres);
+	coungion && (document.getElementById("coungion").innerHTML = "国家/地区:&nbsp;" + coungion);
+	language && (document.getElementById("language").innerHTML = "语言:&nbsp;" + language);
+	release_date && (document.getElementById("release_date").innerHTML = "上映日期:&nbsp;" + release_date);
+	runtime && (document.getElementById("runtime").innerHTML = "片长:&nbsp;" + runtime + " 分钟");
+	rating_count && (document.getElementById("rating_count").innerHTML = rating_count + " 万人参与评分");
+
+	rating && rating.length == 1 && (rating += ".0");
+	rating && (document.getElementById("rating").innerHTML = rating);
+	rating || (document.getElementsByClassName("movie_rating")[0].innerHTML = "");
+
+	storyline && (document.getElementById("storyline").innerHTML = storyline);
+	storyline || (document.getElementsByClassName("section1")[0].innerHTML = "");
+
+	relmovpos && (append_relmovs(relmovpos));
+	relmovpos || (document.getElementsByClassName("banner_left")[0].innerHTML = "");
+
+	if (!photo_director && !photo_stars) {
+		document.getElementsByClassName("section2")[0].innerHTML = "";
+	}
+	else {
+		photo_director && append_casts(photo_director, "导演");
+		photo_stars && append_casts(photo_stars, "演员");
+		add_total_for_casts();
+	}
+
+	if (stills_url) {
+		append_stills(stills_url);
+		add_total_for_stills();
+	}
+	else {
+		document.getElementsByClassName("section3")[0].innerHTML = "";
+	}
+
+	get_comment(basis);
+
+	//星星
+	$(function () {
+		$("#star-1").raty({
+			hints: ['2', '4', '6', '8', '10'],//自定义分数
+			starOff: '..{% static "img/iconpic-star-S-default.png" %}',//默认灰色星星
+			starOn: '..{% static "img/iconpic-star-S.png" %}',//黄色星星
+			path: '..',//可以是相对路径
+			number: 5,//星星数量，要和hints数组对应
+			showHalf: true,
+			targetKeep: true,
+			click: function (score, evt) {//点击事件
+				//第一种方式：直接取值
+			}
+		});
+		$("#star-2").raty({
+			hints: ['2', '4', '6', '8', '10'],
+			starOff: '..{% static "img/iconpic-star-S-default.png" %}',
+			starOn: '..{% static "img/iconpic-star-S.png" %}',
+			path: '..',
+			number: 5,
+			showHalf: true,
+			targetKeep: true,
+			click: function (score, evt) {//点击事件
+				//第一种方式：直接取值
+			}
+		})
+	});
+
+	document.getElementsByClassName("star")[0].style.width = String(Number(rating) * 10) + "%";
+
+</script>
+{% endblock %}

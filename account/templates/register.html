@@ -1,0 +1,130 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>账户注册</title>
+    <link rel="stylesheet" href={% static 'css/register.css' %}>
+    <link rel="stylesheet" href={% static 'css/reset.css' %}>
+{% endblock %}
+
+{% block main %}
+    <div class="center">
+        <div class="register">
+            <div id="title">账号注册</div>
+            <form id="form" autocomplete="off">
+                <div id="picode_total">
+                    <input type="text" name="picode" class="text" placeholder="请输入图形验证码">
+                    <img id="picode" onclick="changeCode();">
+                </div>
+                <hr>
+                <div id="msgcode_total">
+                    <input type="text" name="phone_number" class="text" placeholder="请输入手机号">
+                    <a class="msgcode" onclick="picode_submit()">发送验证码</a>
+                </div>
+                <hr>
+                <input type="text" name="code" class="text" placeholder="请输入手机验证码">
+                <hr>
+                <input type="password" name="password" class="text" placeholder="请输入密码">
+                <hr>
+                <input type="password" name="password_reinput" class="text" placeholder="请再次输入密码">
+                <hr>
+                <div id="tip">&nbsp;</div>
+                <button onclick="reg_submit()" type="button">注册</button>
+            </form>
+            <li>已有账号? 去<a class="zhuce" href="../login/">登录</a></li>
+        </div>
+    </div>
+    <script>
+        function changeCode()
+        {
+            document.getElementById("picode").src="../../image/picode/" + Math.random();
+        }
+
+        function reg_submit(){
+            var tip=document.getElementById("tip");
+            var text=document.getElementsByClassName("text");
+
+            if (text[2].value=="")
+            {
+                tip.innerHTML="请输入短信验证码!";
+            }
+            else if (text[3].value!=text[4].value)
+            {
+                tip.innerHTML="两次密码不一致!";
+            }
+            else if (text[3].value.length < 6)
+            {
+                tip.innerHTML="密码过短!";
+            }
+            else
+            {
+                var form_submit=new XMLHttpRequest;
+                form_submit.open("POST", "submit/", true);
+                form_submit.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                form_submit.send("phone_number="+text[1].value+"&password="+text[3].value+"&code="+text[2].value);
+                form_submit.onreadystatechange=function(){
+                    if (form_submit.readyState==4 && form_submit.status==200)
+                    {
+                        var content=form_submit.responseText
+                        if (content=="204")
+                        {
+                            tip.innerHTML="手机号已注册!";
+                        }
+                        else if (content=="413")
+                        {
+                            tip.innerHTML="短信验证码错误!";
+                        }
+                        else if (content=="200")
+                        {
+                            tip.innerHTML="注册成功! 即将返回登录页面.";
+                            setTimeout("window.location.href = '../login/'", 3000);
+                        }
+                    }
+                }
+            }
+        }
+
+        function picode_submit(){
+            var picode=document.getElementsByClassName("text")[0].value;
+            var phone_number=document.getElementsByClassName("text")[1].value;
+            var tip=document.getElementById("tip");
+
+            if (picode=="")
+            {
+                tip.innerHTML="请输入验证码";
+            }
+            else if(phone_number=="")
+            {
+                tip.innerHTML="请输入手机号";
+            }
+            else
+            {
+                var form_submit=new XMLHttpRequest;
+                form_submit.open("POST", "../sendcode/submit/", true);
+                form_submit.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                form_submit.send("phone_number="+phone_number+"&picode="+picode);
+                form_submit.onreadystatechange=function()
+                {
+                    if (form_submit.readyState==4 && form_submit.status==200)
+                    {
+                        var content=form_submit.responseText
+                        if (content=="200")
+                        {
+                            tip.innerHTML="发送成功, 请注意查收!";
+                        }
+                        else if (content=="412")
+                        {
+                            tip.innerHTML="图形验证码校验失败!";
+                        }
+                        else if (content=="414")
+                        {
+                            tip.innerHTML="手机号格式不正确!";
+                        }
+                    }
+                }
+            }
+        }
+        changeCode();
+    </script>
+{% endblock %}

@@ -1,0 +1,28 @@
+html,body,div,ul,li,video,h3,img,span {
+	margin: 0;
+	padding: 0;
+	font-family: "Helvetica Neue",Heivetica,Arial,sans-serif;
+}
+ul,li{
+ 	list-style: none;
+}
+
+li {
+	text-decoration: none;
+}
+a {
+	text-decoration: none;
+
+}
+.clearfloat:after {
+　　content:"";
+　　height:0;
+　　line-height:0;
+    display: block;
+　　visibility:hidden;
+　　clear:both;
+}
+.clearfloat {
+　　zoom:1;
+}
+

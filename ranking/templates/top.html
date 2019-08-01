@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+{% load staticfiles %}
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href={% static 'css/header.css' %}>
+	<link rel="stylesheet" href={% static 'css/iconfont_header.css' %}>
+	<link rel="stylesheet" href={% static 'css/reset.css' %}>
+	{% block statics %}
+
+	{% endblock %}
+</head>
+
+<body>
+	<div class="headerx">
+		<div class="centerx">
+			<div class="header_box">
+				<div class="header_left">
+					<div class="logo">
+						<a href="/ranking/?ranking=hotmov_list"><img src={% static "img/logo.1.png" %} alt=""
+								class="header_logo_pic">
+							<span class="header_logo_text">云顶电影榜</span></a>
+					</div>
+				</div>
+				<div>
+					<div class="nav">
+						<div class="nav_txt">
+							<ul class="list">
+								<li><a href="/ranking/?ranking=hotmov_list" class="header_nav_txt hotmov_list">热映高分榜</a>
+								</li>
+								<li><a href="/ranking/?ranking=newmov_list&&page=1"
+										class="header_nav_txt newmov_list">热议新片榜</a></li>
+								<li><a href="/ranking/?ranking=homboxoff_list"
+										class="header_nav_txt homboxoff_list">国内票房榜</a></li>
+								<li><a href="/ranking/?ranking=top100_list&&page=1"
+										class="header_nav_txt top100_list">TOP100榜</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="header_right">
+				<div class="header_search">
+					<form action="/search/" class="seach_form" method="post" onsubmit="return search_content_check()">
+						<input type="search" style="color: white;"
+							placeholder="请输入想搜索的电影" class="searchx" name="content" autocomplete="off">
+						<input type="submit" class="submitx"><span class="iconfont icon-sousuokuang"></span>
+					</form>
+				</div>
+			</div>
+			<div class="personal">
+				<div class="header_pic">
+					<div class="circlebox">
+						<img src="" alt="" class="headx">
+						<div id="drop_bar">
+							<a href="/account/space/">个人中心</a>
+							<a href="/account/logout/">退出登录</a>
+						</div>
+					</div>
+					<div class="circle_txt">
+						<a href="/account/register/">注册</a>
+						<a href="/account/login/">登录</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% block main %}
+
+	{% endblock %}
+	<script>
+		function search_content_check() {
+			var search = document.getElementsByClassName("searchx")[0];
+			if (search.value == "") {
+				search.placeholder = "请输入内容再提交";
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+
+		var phone_number = document.cookie.match(new RegExp("[0-9]+"))
+		if (phone_number) {
+			document.getElementsByClassName("headx")[0].src = "/image/avatar/?file_name=" + phone_number;
+			document.getElementsByClassName("circle_txt")[0].innerHTML = "";
+		}
+		else {
+			document.getElementsByClassName("circlebox")[0].innerHTML = "";
+		}
+	</script>
+</body>
+
+</html>

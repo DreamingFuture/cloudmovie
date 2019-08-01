@@ -1,0 +1,230 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+<meta charset="UTF-8">
+<title>搜索结果</title>
+<style type="text/css">
+	.pagination-bar {
+		font-size: 0px;
+		padding: 20px 0px;
+		text-align: center;
+	}
+
+	.pagination-bar a {
+		display: inline-block;
+		padding: 5px 7.5px;
+		text-decoration: none;
+		min-width: 20px;
+		font-size: 16px;
+	}
+
+	.pagination-bar a:not(.disabled) {
+		background-color: #FFF;
+		color: #666;
+		border: 1px solid #BBBBBB;
+	}
+
+	.pagination-bar a.disabled {
+		background-color: #666;
+		color: #FFF;
+		border: 1px solid #444;
+	}
+
+	.page-prev {
+		border-radius: 15px 0px 0px 15px;
+	}
+
+	.page-next {
+		border-radius: 0px 15px 15px 0px
+	}
+
+	.pagination-bar span:not(.active) {
+		display: inline-block;
+		padding: 5px 7.5px;
+		font-size: 16px;
+	}
+</style>
+<link rel="stylesheet" href={% static "css/search.css" %}>
+<link rel="stylesheet" href={% static "css/iconfont.css" %}>
+<link rel="stylesheet" href={% static "css/reset.css" %}>
+{% endblock %}
+
+{% block main %}
+<div class="main">
+	<div class="search_result">
+		<p id="titles" class="search_baseed">按片名搜索</p>
+		{% for data in movie_data %}
+		<div class="movie_title">
+			<table width="100%" class="">
+				<tbody>
+					<tr class="item">
+						<td width="200" valign="top">
+							<a title="" class="nbg" href="../detail/{{ data.title.movie_id }}/">
+								<img width="150" src="{{ data.title.poster }}" id="poster" alt="">
+							</a>
+						</td>
+						<td valign="p12">
+							<div class="p11">
+								<a class="data.title.title" href="../detail/{{ data.title.movie_id }}"
+									style="font-size: 30px;">{{ data.title.title }}</a><br><br>
+								导演：<span class="directors">{{ data.title.directors }}</span><br><br>
+								编剧：<span class="stars">{{ data.title.writers }}</span><br><br>
+								上映日期：<span class="release_date">{{ data.title.release_date }}</span>
+							</div>
+							<div class="star clearfloat">
+								<span class="rating"
+									style="color: red;font-size: 50px; margin-top:-10px; margin-left: 40px">{{ data.title.rating }}</span>
+								<br>
+								<span class="rating_count" style="float: right"
+									;>评论人数:{{ data.title.rating_count }}w</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="ul first"></p>
+		</div>
+		{% endfor %}
+		<p id="directors" class="search_baseed">按导演搜索</p>
+		{% for director in movie_director %}
+		<div class="movie_director">
+			<table width="100%" class="">
+				<tbody>
+					<tr class="item">
+						<td width="200" valign="top">
+							<a title="" class="nbg" href="../detail/{{ director.director.movie_id }}/">
+								<img width="150" src="{{ director.director.poster }}" id="poster" alt="">
+							</a>
+						</td>
+						<td valign="p12">
+							<div class="p11">
+								<a class="director.director.title" href="../detail/{{ director.director.movie_id }}"
+									style="font-size: 30px;">{{ director.director.title }}</a><br><br>
+								导演：<span class="directors">{{ director.director.directors }}</span><br><br>
+								编剧：<span class="stars">{{ director.director.writers }}</span><br><br>
+								上映日期：<span class="release_date">{{ director.director.release_date }}</span>
+							</div>
+							<div class="star clearfloat">
+								<span class="rating"
+									style="color: red;font-size: 50px; margin-top:-10px; margin-left: 40px">{{ director.director.rating }}</span>
+								<br>
+								<span class="rating_count" style="float: right"
+									;>评论人数:{{ director.director.rating_count }}w</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="ul first"></p>
+		</div>
+		{% endfor %}
+		<p id="writers" class="search_baseed">按编剧搜索</p>
+		{% for writer in movie_writer %}
+		<div class="movie_writer">
+			<table width="100%" class="">
+				<tbody>
+					<tr class="item">
+						<td width="200" valign="top">
+							<a title="" class="nbg" href="../detail/{{ writer.writer.movie_id }}/">
+								<img width="150" src="{{ writer.writer.poster }}" id="poster" alt="">
+							</a>
+						</td>
+						<td valign="p12">
+							<div class="p11">
+								<a class="writer.writer.title" href="../detail/{{ writer.writer.movie_id }}"
+									style="font-size: 30px;">{{ writer.writer.title }}</a><br><br>
+								导演：<span class="directors">{{ writer.writer.directors }}</span><br><br>
+								编剧：<span class="stars">{{ writer.writer.writers }}</span><br><br>
+								上映日期：<span class="release_date">{{ writer.writer.release_date }}</span>
+							</div>
+							<div class="star clearfloat">
+								<span class="rating"
+									style="color: red;font-size: 50px; margin-top:-10px; margin-left: 40px">{{ writer.writer.rating }}</span>
+								<br>
+								<span class="rating_count" style="float: right"
+									;>评论人数:{{ writer.writer.rating_count }}w</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="ul first"></p>
+		</div>
+		{% endfor %}
+		<p id="stars" class="search_baseed">按演员搜索</p>
+		{% for star in movie_star%}
+		<div class="movie_star">
+			<table width="100%" class="">
+				<tbody>
+					<tr class="item">
+						<td width="200" valign="top">
+							<a title="" class="nbg" href="../detail/{{ star.stars.movie_id }}/">
+								<img width="150" src="{{ star.stars.poster }}" id="poster" alt="">
+							</a>
+						</td>
+						<td valign="p12">
+							<div class="p11">
+								<a class="star.stars.title" href="../detail/{{ star.stars.movie_id }}"
+									style="font-size: 30px;">{{ star.stars.title }}</a><br><br>
+								导演：<span class="directors">{{ star.stars.directors }}</span><br><br>
+								编剧：<span class="stars">{{ star.stars.writers }}</span><br><br>
+								上映日期：<span class="release_date">{{ star.stars.release_date }}</span>
+							</div>
+							<div class="star clearfloat">
+								<span class="rating"
+									style="color: red;font-size: 50px; margin-top:-10px; margin-left: 40px">{{ star.stars.rating }}</span>
+								<br>
+								<span class="rating_count" style="float: right"
+									;>评论人数:{{ star.stars.rating_count }}w</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="ul first"></p>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+<script type="text/javascript">
+	var title = document.getElementsByClassName("movie_title")
+	var writer = document.getElementsByClassName("movie_writer")
+	var director = document.getElementsByClassName("movie_director")
+	var star = document.getElementsByClassName("movie_star")
+	var rating = document.getElementsByClassName("rating")
+	var rating_count = document.getElementsByClassName("rating_count")
+	var release_date = document.getElementsByClassName("release_date")
+	if (title[0] == undefined) {
+		document.getElementById("titles").innerHTML = "";
+	}
+	if (writer[0] == undefined) {
+		document.getElementById("writers").innerHTML = "";
+	}
+	if (director[0] == undefined) {
+		document.getElementById("directors").innerHTML = "";
+	}
+	if (star[0] == undefined) {
+		document.getElementById("stars").innerHTML = "";
+	}
+	if (title[0] == undefined && writer[0] == undefined && director[0] == undefined && star[0] == undefined) {
+		document.getElementById("titles").innerHTML = "找不到任何电影";
+	}
+	for (var i = 0; i < rating.length; i++) {
+		if (rating[i].innerHTML == "None") {
+			rating[i].innerHTML = ""
+		}
+	}
+	for (var i = 0; i < rating_count.length; i++) {
+		if (rating_count[i].innerHTML == "评论人数:Nonew") {
+			rating_count[i].innerHTML = ""
+		}
+	}
+	for (var i = 0; i < release_date.length; i++) {
+		if (release_date[i].innerHTML == "None") {
+			release_date[i].innerHTML = "未知"
+		}
+	}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+	<meta charset="UTF-8">
+	<title>演员详情</title>
+	<link rel="stylesheet" href={% static 'css/casts_page.css' %}>
+{% endblock %}
+
+{% block main %}
+	<div class="main">
+		<div class="article">
+			<div class="subheading">
+				<div class="redbox"></div>
+				<div class="subheading_text"></div>
+			</div>
+			<div id="casts"></div>
+		</div>
+		<div class="aside">
+			<div id="back_to_detail">
+				<a id="detail_page"></a>
+			</div>
+			<div class="subheading">
+				<div class="redbox"></div>
+				<div class="subheading_text">演职人员概况</div>
+			</div>
+			<div id="overview"></div>
+		</div>
+	</div>
+    <script>
+		var content={{  doc|safe  }}
+		var i;
+		var j;
+		var cast_count=content["cast_count"]
+		var cast_info=content["cast_info"]
+		var title=content["title"]
+		var detail_url=content["detail_url"]
+
+		var detail_page=document.getElementById("detail_page")
+		var casts=document.getElementById("casts")
+		var overview=document.getElementById("overview")
+
+		detail_page.innerHTML="<点击返回 "+title+" 详情页"
+		detail_page.href="../"
+		document.getElementsByClassName("subheading_text")[0].innerHTML="演职人员 共("+cast_count+")人"
+
+		var duty=["导演 Director", "演员 Cast", "编剧 Writer", "制片人 Producer", "音乐 Music Department", "摄影 Camera Department", "剪辑 Editorial Department", "美术 Art Department", "服装 Costume Department", "副导演 Assistant Director", "音效 Sound Department", "视觉特效 Visual Effects", "现场特效 Special Effects", "动作特技 Action or Stunts", "其它 Other Crew"]
+		for (i=0; i<duty.length; i++)
+		{
+			var each_duty=cast_info[duty[i]];
+			if (each_duty)
+			{
+				var overview_one_duty=document.createElement("div");
+				overview_one_duty.className="duty";
+				var overview_duty=document.createElement("div");
+				overview_duty.className="overview";
+				overview_duty.innerHTML=duty[i]+":&nbsp;";
+				overview_one_duty.appendChild(overview_duty);
+
+				var one_duty=document.createElement("div");
+				one_duty.className="one_duty";
+				var temp=document.createElement("div");
+				temp.innerHTML=duty[i];
+				one_duty.append(temp);
+
+				for (j=0; j<each_duty.length; j++)
+				{
+					var each_one=document.createElement("div");
+					each_one.className="each_one";
+					var name_=document.createElement("div");
+					name_.innerHTML=each_duty[j]["name"];
+                    name_.className="name_and_duty";
+                    var name_temp=document.createElement("div");
+                    name_temp.innerHTML=each_duty[j]["name"]+",&nbsp;";
+					name_temp.className="overview";
+ 
+					var duty_=document.createElement("div");
+					duty_.innerHTML= each_duty[j]["duty"]? each_duty[j]["duty"] : " ";
+					duty_.className="name_and_duty";
+					var url=document.createElement("img");
+					url.src="../../.."+each_duty[j]["url"];
+					url.alt="";
+
+					each_one.appendChild(url);
+					each_one.appendChild(name_);
+					each_one.appendChild(duty_);
+					one_duty.appendChild(each_one);
+					overview_one_duty.appendChild(name_temp);
+				};
+			
+				casts.appendChild(one_duty);
+				overview.appendChild(overview_one_duty);
+			}
+		}
+		</script>
+{% endblock %}

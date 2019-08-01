@@ -1,0 +1,64 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>登录</title>
+    <link rel="stylesheet" href={% static 'css/login.css' %}>
+    <link rel="stylesheet" href={% static 'css/reset.css' %}>
+{% endblock %}
+
+{% block main %}
+	<div class="center">
+		<div class="login">
+			<div id="title">账号登录</div>
+			<form id="form" autocomplete="off" method="post">
+			<input type="text" name="phone_number" class="text" placeholder="请输入手机号">
+			<hr>
+			<input type="password" name="password" class="text" placeholder="请输入密码">
+			<hr>
+			<a class="forget" href="../forget_password/">忘记密码</a>
+			<div id="tip">&nbsp;</div>
+			<button onclick="log_submit()" type="button">登录</button>
+			</form>
+			<li>没有账号? 去<a class="zhuce" href="../register/">注册</a></li>
+		</div>
+	</div>
+	<script>
+		function log_submit(){
+			var tip=document.getElementById("tip");
+			var text=document.getElementsByClassName("text");
+
+			if (text[0].value=="")
+			{
+				tip.innerHTML="请输入手机号!";
+			}
+			else if (text[1].value=="")
+			{
+				tip.innerHTML="请输入密码!";
+			}
+			else
+			{
+				var form_submit=new XMLHttpRequest;
+				form_submit.open("POST", "submit/", true);
+				form_submit.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				form_submit.send("phone_number="+text[0].value+"&password="+text[1].value);
+				form_submit.onreadystatechange=function(){
+					if (form_submit.readyState==4 && form_submit.status==200)
+					{
+						var content=form_submit.responseText
+						if (content=="202")
+						{
+							tip.innerHTML="用户不存在或密码错误!";
+						}
+						else if (content=="200")
+						{
+							tip.innerHTML="登录成功! 即将返回个人中心.";
+							setTimeout("window.location.href = '../space/'", 3000);
+						}
+					}
+				}
+			}
+		}
+	</script>
+{% endblock %}

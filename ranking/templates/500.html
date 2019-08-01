@@ -1,0 +1,39 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{
+			background-color: #f5f4f3;
+		}
+		.pic{
+			width: 100%;
+			height:100vh;
+			background-size:100% 100%;
+		}
+		.txt{
+			width: 150px;
+			background: black;
+			border: 1px soild black;
+			position: absolute;
+			left: 820px;
+			top: 450px;
+			border-radius: 10px;
+		}
+		.return{
+			margin-left: 38px;
+			line-height: 40px;
+			color: white;
+			text-decoration: none;
+		}
+	</style>
+{% endblock %}
+
+{% block main %}
+	<div class="box">
+        <a href="/">
+            <img src={% static "img/500.png" %} alt="" class="pic">
+        </a>
+	</div>
+{% endblock %}

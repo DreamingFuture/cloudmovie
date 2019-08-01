@@ -1,0 +1,100 @@
+{% extends 'top.html' %}
+{% load staticfiles %}
+{% block statics%}
+<meta charset="UTF-8">
+<title>剧照详情</title>
+<link rel="stylesheet" href={% static 'css/stills_page.css' %}>
+<link rel="stylesheet" href={% static 'css/reset.css' %}>
+{% endblock %}
+
+{% block main %}
+<div class="main">
+    <div class="stills">
+        <div class="subheading">
+            <div class="redbox"></div>
+            <div class="subheading_text"></div>
+        </div>
+        <div id="stills"></div>
+    </div>
+    <div class="aside">
+        <div class="back_to_detail">
+            <a id="detail_page"></a>
+        </div>
+        <div class="subheading">
+            <div class="redbox"></div>
+            <div class="subheading_text">相关电影</div>
+            <div class="HD_pic" onclick="hide_HD_pic()">
+                <img src="../../image/stills/?movie_id=1485260&file_name=p1324006281" alt="" id="HD_pic"
+                    style="margin: auto;right: 0px;left: 0px;top: 0px;bottom: 0px;z-index: 999;position: fixed;height: 700px;">
+            </div>
+        </div>
+        <div id="relmovs"></div>
+    </div>
+</div>
+<script>
+    function hide_HD_pic() {
+        document.getElementsByClassName("HD_pic")[0].style.display = "none";
+    }
+
+    function append_relmovs(relmovpos) {
+        var i
+        var extend_info = document.getElementById('relmovs');
+        for (i = 0; i < relmovpos.length; i++) {
+            var each_mov = document.createElement("div");
+            var title = document.createElement("div");
+            var img = document.createElement("img");
+            title.innerHTML = relmovpos[i]["title"];
+            title.className = "title";
+            each_mov.className = "movie";
+            img.src = "../../.." + relmovpos[i]["poster_url"];
+            img.width = "100";
+            img.height = "150";
+            each_mov.appendChild(img);
+            each_mov.appendChild(title);
+            extend_info.appendChild(each_mov);
+        };
+    }
+
+    function append_stills(stills_url) {
+        var i
+        var extend_info = document.getElementById('stills');
+        for (i = 0; i < stills_url.length; i++) {
+            var each_still = document.createElement("div");
+            var img = document.createElement("img");
+            each_still.className = "still"
+            img.src = "../../.." + stills_url[i];
+            img.onclick = function () {
+				document.getElementsByClassName("HD_pic")[0].style.display = "block";
+				document.getElementById("HD_pic").src = this.src.replace("stills_thumbnail","stills");
+			}
+            each_still.appendChild(img);
+            extend_info.appendChild(each_still);
+        };
+    }
+
+    var content = {{ doc| safe  }};
+    var stills = content["stills"]
+    var relative_movie = content["relative_movie"]
+    var title = content["title"]
+    var detail_url = content["detail_url"]
+    var stills_count = content["stills_count"]
+
+    var detail_page = document.getElementById("detail_page")
+    var count = document.getElementsByClassName("subheading_text")[0]
+
+    detail_page.innerHTML = "< 点击返回 " + title + " 详情页"
+    detail_page.href = "../"
+
+    count.innerHTML = "剧照 (共" + stills_count + "张)"
+
+    if (relative_movie) {
+        append_relmovs(relative_movie);
+    }
+    else {
+        document.getElementsByClassName("subheading")[1].innerHTML = "";
+    }
+    if (stills) {
+        append_stills(stills);
+    }
+</script>
+{% endblock %}
